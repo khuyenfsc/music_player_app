@@ -60,6 +60,7 @@ public class PlaySong implements ActionListener{
 
         mediaPlayer.play();
         discPanel.setTimerStart();
+        controlPanel.resetDurationBar();
     }
 
     public PlaySong(){

@@ -18,6 +18,10 @@ public class DurationBar extends JSlider implements ActionListener, ChangeListen
         timer.start();
     }
 
+    void setMaxTime(){
+        this.setMaximum(controlPanel.getTotalMinute()*60 + controlPanel.getExtraSecond());
+    }
+
     DurationBar(ControlPanel controlPanel){
         this.setValue(0);
         this.addChangeListener(this);
@@ -25,27 +29,38 @@ public class DurationBar extends JSlider implements ActionListener, ChangeListen
         this.setPreferredSize(new Dimension(300, 20));
         this.setBackground(null);
 
+
         this.controlPanel = controlPanel;
+    }
+
+    public void setMaxTimer(){
+        this.setMaximum(controlPanel.getTotalMinute()*60 + controlPanel.getExtraSecond());
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(progressTime == 60){
-            currenMinute++;
-            progressTime = 0;
-        }
+//        if(progressTime == 60){
+//            currenMinute++;
+//            progressTime = 0;
+//        }
+//
+//        if(progressTime + 60 * currenMinute >= controlPanel.getTotalMinute()*60 + controlPanel.getExtraSecond()){
+//            timer.stop();
+//        }
 
-        if(progressTime + 60 * currenMinute >= controlPanel.getTotalMinute()*60 + controlPanel.getExtraSecond()){
+        if(progressTime >= controlPanel.getTotalMinute()*60 + controlPanel.getExtraSecond()){
             timer.stop();
         }
+
         this.setValue(progressTime);
         progressTime++;
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
-        controlPanel.changeCurrentTime(this.getValue(), currenMinute);
+        controlPanel.changeCurrentTime(progressTime % 60, progressTime / 60);
 
     }
+
 
 }

@@ -17,6 +17,7 @@ public class ControlPanel extends JPanel {
         stopTime.setForeground(Color.white);
 
         durationBar.startCount();
+        durationBar.setMaxTimer();
 
         revalidate();
 
@@ -44,6 +45,10 @@ public class ControlPanel extends JPanel {
         this.totalMinute = (int)Math.floor(totalDuration);
         System.out.println(extraSecond);
         changeStopTime();
+    }
+
+    void resetDurationBar(){
+        this.durationBar.setValue(0);
     }
 
     ControlPanel(){
