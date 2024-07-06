@@ -4,7 +4,14 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ControlPanel extends JPanel {
+    DiscPanel discPanel;
     DurationBar durationBar = new DurationBar(this);
+    PauseButton pauseButton = new PauseButton(this);
+    RewindButton rewindButton = new RewindButton(this);
+    FastForwardButton fastForwardButton = new FastForwardButton(this);
+    VolumeButton volumeButton = new VolumeButton(this);
+    ReplayButton replayButton = new ReplayButton(this);
+    MainPlayer mainPlayer;
     JLabel startTime = new JLabel();
     JLabel stopTime = new JLabel();
     double totalDuration;
@@ -24,11 +31,19 @@ public class ControlPanel extends JPanel {
 
     }
 
+    DiscPanel getDiscPanel(){
+        return this.discPanel;
+    }
+
     int getTotalMinute(){
         return this.totalMinute;
     }
     int getExtraSecond(){
         return this.extraSecond;
+    }
+
+    PauseButton getPauseButton(){
+        return this.pauseButton;
     }
 
     void changeCurrentTime(int currentSecond, int currentMinute){
@@ -47,11 +62,13 @@ public class ControlPanel extends JPanel {
         changeStopTime();
     }
 
+
     void resetDurationBar(){
         this.durationBar.setValue(0);
+        this.durationBar.progressTime = 1;
     }
 
-    ControlPanel(){
+    ControlPanel(DiscPanel discPanel, MainPlayer mainPlayer){
         startTime.setText("00:00");
         startTime.setFont(new Font("Arial", Font.PLAIN, 15));
         startTime.setForeground(Color.white);
@@ -60,26 +77,23 @@ public class ControlPanel extends JPanel {
         stopTime.setFont(new Font("Arial", Font.PLAIN, 15));
         stopTime.setForeground(Color.white);
 
+
         this.setBackground(null);
         System.out.println(durationBar.getX() + " " + durationBar.getY());
         System.out.println(durationBar.getWidth() + " " + durationBar.getHeight());
-        this.setLayout(new FlowLayout(FlowLayout.CENTER, 10, 0));
+        this.setBounds(0, 420, 450, 180);
+        this.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
         this.add(startTime);
         this.add(durationBar);
         this.add(stopTime);
-    }
+        this.add(volumeButton);
+        this.add(rewindButton);
+        this.add(pauseButton);
+        this.add(fastForwardButton);
+        this.add(replayButton);
 
-    GridBagConstraints setControlPanel(){
-        GridBagConstraints gbc = new GridBagConstraints();
-        gbc.fill = GridBagConstraints.BOTH;
-        gbc.anchor = GridBagConstraints.NORTHWEST;
-        gbc.gridy = 2;
-        gbc.gridx = 0;
-        gbc.weighty = 30;
-        gbc.gridheight = 1;
-        gbc.gridwidth = 1;
-
-        return gbc;
+        this.discPanel = discPanel;
+        this.mainPlayer = mainPlayer;
     }
 
 

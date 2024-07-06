@@ -14,6 +14,7 @@ public class AddSong extends JButton implements ActionListener {
     DiscPanel discPanel;
     TitlePanel titlePanel;
     ControlPanel controlPanel;
+    PlaySong playSong;
 
     public AddSong(DiscPanel discPanel, TitlePanel titlePanel, ControlPanel controlPanel){
         this.addActionListener(this);
@@ -21,6 +22,11 @@ public class AddSong extends JButton implements ActionListener {
         this.discPanel = discPanel;
         this.titlePanel = titlePanel;
         this.controlPanel = controlPanel;
+        this.setText("Play a song");
+    }
+
+    public PlaySong getPlaySong(){
+        return this.playSong;
     }
 
     @Override
@@ -31,10 +37,10 @@ public class AddSong extends JButton implements ActionListener {
 
             if(response == JFileChooser.APPROVE_OPTION){
                 try {
-                    PlaySong playSong = new PlaySong(fileChooser.getSelectedFile().getAbsolutePath(), discPanel, controlPanel);
+                    playSong = new PlaySong(fileChooser.getSelectedFile().getAbsolutePath(), discPanel, controlPanel);
                     System.out.println(fileChooser.getSelectedFile().getName());
 
-                    titlePanel.setTitle(fileChooser.getSelectedFile().getName());
+                    titlePanel.changeTitle(fileChooser.getSelectedFile().getName());
                 } catch (Exception ex) {
                     throw new RuntimeException(ex);
                 }

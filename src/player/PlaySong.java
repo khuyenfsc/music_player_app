@@ -18,6 +18,7 @@ public class PlaySong implements ActionListener{
     private Duration timePause;
     private boolean musicPaused = false;
     private JButton playButton = new JButton("Play");
+    ControlPanel controlPanel;
 
 
 
@@ -40,15 +41,44 @@ public class PlaySong implements ActionListener{
 
     }
 
-    public JButton playButtonMethod(){
-        playButton.addActionListener(this);
-        return playButton;
+    void fastForward(){
+        mediaPlayer.seek(Duration.millis(mediaPlayer.getCurrentTime().toMillis() + 10000));
+        mediaPlayer.play();
     }
 
+    void reWind(){
+        if(mediaPlayer.getCurrentTime().toMillis() > 10000){
+            mediaPlayer.seek(Duration.millis(mediaPlayer.getCurrentTime().toMillis() - 10000));
+            mediaPlayer.play();
+        }else{
+            mediaPlayer.seek(Duration.millis(0));
+            mediaPlayer.play();
+        }
+    }
 
+    void seekToSpecificTime(Duration specificTime){
+        mediaPlayer.seek(specificTime);
+        mediaPlayer.play();
+    }
+
+    void setIconForPauseButton(){
+        controlPanel.pauseButton.setIcon(new ImageIcon(".\\src\\images\\pause.png"));;
+    }
+
+    void setVolume(double volume){
+        mediaPlayer.setVolume(volume);
+    }
+
+    int getVolume(){
+        return (int)mediaPlayer.getVolume();
+    }
 
     public PlaySong(String filePath, DiscPanel discPanel, ControlPanel controlPanel) throws Exception{
         JFXPanel jfxPanel = new JFXPanel();
+        // Stop the song is playing
+        if(mediaPlayer != null){
+            mediaPlayer.stop();
+        }
 
         mediaPlayer = new MediaPlayer(new Media(new File(filePath).toURI().toString()));
 
@@ -57,14 +87,15 @@ public class PlaySong implements ActionListener{
         }
 
         controlPanel.setTotalDuration(mediaPlayer.getTotalDuration().toMinutes());
+        System.out.println(Duration.millis(1000*mediaPlayer.getTotalDuration().toSeconds()));
 
         mediaPlayer.play();
+        this.controlPanel = controlPanel;
+
+        setIconForPauseButton();
+
         discPanel.setTimerStart();
         controlPanel.resetDurationBar();
-    }
-
-    public PlaySong(){
-
     }
 
     @Override
