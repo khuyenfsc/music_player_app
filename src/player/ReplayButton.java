@@ -22,9 +22,11 @@ public class ReplayButton extends JButton implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         if(this.controlPanel.durationBar.checkReplay == 0){
             this.controlPanel.durationBar.checkReplay = 1;
+            this.controlPanel.durationBar.isPlaylist = 0;
             this.setBackground(Color.lightGray);
         }else{
             this.controlPanel.durationBar.checkReplay = 0;
+            this.controlPanel.durationBar.isPlaylist = 1;
             this.setBackground(null);
         }
     }

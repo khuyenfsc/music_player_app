@@ -45,7 +45,7 @@ public class VolumeBar extends JSlider implements ChangeListener {
     @Override
     public void stateChanged(ChangeEvent e) {
         if (this.mainPlayer!= null){
-            this.mainPlayer.futures.addSong.getPlaySong().setVolume((0.01*this.getValue()));
+            this.mainPlayer.controlPanel.playSong.setVolume((0.01*this.getValue()));
         }
         this.label.setText(this.getValue()+"");
     }

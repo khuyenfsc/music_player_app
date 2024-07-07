@@ -4,8 +4,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ControlPanel extends JPanel {
+    int checkStreamPlay;//0 - from addButton,, 1 - from playlist//
+    PlaySong playSong;
     DiscPanel discPanel;
-    DurationBar durationBar = new DurationBar(this);
+    public DurationBar durationBar = new DurationBar(this);
     PauseButton pauseButton = new PauseButton(this);
     RewindButton rewindButton = new RewindButton(this);
     FastForwardButton fastForwardButton = new FastForwardButton(this);
@@ -66,6 +68,14 @@ public class ControlPanel extends JPanel {
     void resetDurationBar(){
         this.durationBar.setValue(0);
         this.durationBar.progressTime = 1;
+    }
+
+    public void setCheckStreamPlay(int checkStreamPlay){
+        this.checkStreamPlay = checkStreamPlay;
+    }
+
+    public void setPlaysong(PlaySong playSong){
+        this.playSong = playSong;
     }
 
     ControlPanel(DiscPanel discPanel, MainPlayer mainPlayer){

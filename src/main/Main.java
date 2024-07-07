@@ -23,7 +23,7 @@ public class Main{
 
         appWindow.setLayout(null);
         appWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        appWindow.setSize(600, 630);
+        appWindow.setSize(650, 630);
         appWindow.setResizable(true);
 
     }

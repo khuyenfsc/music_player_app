@@ -21,7 +21,10 @@ public class FastForwardButton extends JButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        this.controlPanel.mainPlayer.futures.addSong.getPlaySong().fastForward();
+        this.controlPanel.playSong.fastForward();
         this.controlPanel.durationBar.increaseCurrentTime();
+        this.controlPanel.getDiscPanel().setTimerStart();
+        this.controlPanel.pauseButton.setIcon(new ImageIcon(".\\src\\images\\pause.png"));
+        this.controlPanel.pauseButton.checkPause = 0;
     }
 }

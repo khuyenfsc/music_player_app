@@ -9,6 +9,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 
 public class AddSong extends JButton implements ActionListener {
     DiscPanel discPanel;
@@ -18,11 +19,17 @@ public class AddSong extends JButton implements ActionListener {
 
     public AddSong(DiscPanel discPanel, TitlePanel titlePanel, ControlPanel controlPanel){
         this.addActionListener(this);
-        this.setPreferredSize(new Dimension(100, 50));
+        this.setBounds(5, 0, 150, 50);
         this.discPanel = discPanel;
         this.titlePanel = titlePanel;
         this.controlPanel = controlPanel;
         this.setText("Play a song");
+        this.setFont(new Font("Arial", Font.PLAIN, 15));
+        this.setBackground(null);
+        this.setFocusable(false);
+        this.setForeground(Color.white);
+        this.setBorder(null);
+        this.setIcon(new ImageIcon(".\\src\\images\\add.png"));
     }
 
     public PlaySong getPlaySong(){
@@ -38,7 +45,8 @@ public class AddSong extends JButton implements ActionListener {
             if(response == JFileChooser.APPROVE_OPTION){
                 try {
                     playSong = new PlaySong(fileChooser.getSelectedFile().getAbsolutePath(), discPanel, controlPanel);
-                    System.out.println(fileChooser.getSelectedFile().getName());
+
+                    controlPanel.setPlaysong(playSong);
 
                     titlePanel.changeTitle(fileChooser.getSelectedFile().getName());
                 } catch (Exception ex) {

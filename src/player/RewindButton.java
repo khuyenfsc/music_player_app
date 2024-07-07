@@ -20,7 +20,10 @@ public class RewindButton extends JButton implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        this.controlPanel.mainPlayer.futures.addSong.getPlaySong().reWind();
+        this.controlPanel.playSong.reWind();
         this.controlPanel.durationBar.decreaseCurrentTime();
+        this.controlPanel.getDiscPanel().setTimerStart();
+        this.controlPanel.pauseButton.setIcon(new ImageIcon(".\\src\\images\\pause.png"));
+        this.controlPanel.pauseButton.checkPause = 0;
     }
 }

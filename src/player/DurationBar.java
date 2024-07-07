@@ -1,5 +1,6 @@
 package player;
 
+import futures.SongButton;
 import javafx.util.Duration;
 
 import javax.swing.*;
@@ -7,6 +8,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 
 public class DurationBar extends JSlider implements ActionListener, ChangeListener {
@@ -14,6 +16,9 @@ public class DurationBar extends JSlider implements ActionListener, ChangeListen
     int progressTime = 1;
     int previousTime = 1;
     int checkReplay = 0;
+    public int ordinalNum;
+    public int isPlaylist;
+    ArrayList<SongButton> songs;
     ControlPanel controlPanel;
 
     void startCount(){
@@ -56,10 +61,32 @@ public class DurationBar extends JSlider implements ActionListener, ChangeListen
     void replayMedia(){
         if(checkReplay == 1){
             progressTime = 0;
-            this.controlPanel.mainPlayer.futures.addSong.getPlaySong().seekToSpecificTime(Duration.millis(progressTime));
+            this.controlPanel.playSong.seekToSpecificTime(Duration.millis(progressTime));
             this.setValue(progressTime);
         }
     }
+
+    public void setSongs(ArrayList<SongButton> songs){
+        this.songs = songs;
+    }
+
+    public void setOrdinalNum(int ordinalNum){
+        this.ordinalNum = ordinalNum;
+    }
+
+    void nextMedia(){
+        if(isPlaylist == 1){
+            ordinalNum++;
+            System.out.println(songs.get(ordinalNum).getFilePath() + " " + ordinalNum);
+
+            progressTime = 0;
+            this.setValue(progressTime);
+
+            songs.get(ordinalNum).doClick();
+            songs.get(ordinalNum - 1).setBackground(null);
+        }
+    }
+
 
     DurationBar(ControlPanel controlPanel){
 
@@ -86,17 +113,22 @@ public class DurationBar extends JSlider implements ActionListener, ChangeListen
         controlPanel.changeCurrentTime(progressTime % 60, progressTime / 60);
         progressTime = this.getValue();
 
-        if(progressTime >= controlPanel.getTotalMinute()*60 + controlPanel.getExtraSecond()){
+        if(progressTime == controlPanel.getTotalMinute()*60 + controlPanel.getExtraSecond()){
             timer.stop();
             controlPanel.getDiscPanel().setTimerStop();
             replayMedia();
+
+            if(ordinalNum < songs.size() - 1){
+                nextMedia();
+            }
+
         }else if(!timer.isRunning()){
             timer.start();
             controlPanel.getDiscPanel().setTimerStart();
         }
 
-        if(this.controlPanel.mainPlayer.futures.addSong.getPlaySong() != null && Math.abs(progressTime - previousTime) > 1){
-            this.controlPanel.mainPlayer.futures.addSong.getPlaySong().seekToSpecificTime(Duration.millis((this.progressTime * 1000)));
+        if(this.controlPanel.playSong != null && Math.abs(progressTime - previousTime) > 1){
+            this.controlPanel.playSong.seekToSpecificTime(Duration.millis((this.progressTime * 1000)));
             previousTime = progressTime;
             controlPanel.pauseButton.setIcon(new ImageIcon(".\\src\\images\\pause.png"));
             controlPanel.pauseButton.checkPause = 0;

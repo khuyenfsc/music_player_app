@@ -37,7 +37,7 @@ public class MainPlayer extends JPanel {
         layeredPane.setBounds(0, 0, 450, 600);
 
         this.setBackground(new Color(62,62,66));
-        this.setBounds(150, 0, 450, 600);
+        this.setBounds(200, 0, 450, 600);
         this.setLayout(null);
 
         layeredPane.add(discPanel, Integer.valueOf(0));
@@ -47,16 +47,6 @@ public class MainPlayer extends JPanel {
 
 
         this.add(layeredPane);
-
-//        this.add(discPanel);
-
-//        this.add(titlePanel);
-
-//        this.add(controlPanel);
-//
-//        this.add(volumeBar);
-
-
     }
 
 

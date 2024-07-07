@@ -25,13 +25,17 @@ public class PauseButton extends JButton implements ActionListener {
         if(checkPause == 1){
             this.setIcon(new ImageIcon(".\\src\\images\\pause.png"));
             checkPause = 0;
-            this.controlPanel.mainPlayer.futures.addSong.getPlaySong().playMusic();
+
+            this.controlPanel.playSong.playMusic();
+
             this.controlPanel.mainPlayer.discPanel.setTimerStart();
             this.controlPanel.durationBar.startCount();
         }else{
             this.setIcon(new ImageIcon(".\\src\\images\\play.png"));
             checkPause = 1;
-            this.controlPanel.mainPlayer.futures.addSong.getPlaySong().pauseMusic();
+
+            this.controlPanel.playSong.pauseMusic();
+
             this.controlPanel.mainPlayer.discPanel.setTimerStop();
             this.controlPanel.durationBar.stopCount();
         }
