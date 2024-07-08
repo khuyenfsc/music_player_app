@@ -71,6 +71,7 @@ public class PlaylistFrame extends JFrame {
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
         this.setSize(300, 300);
+        this.setResizable(false);
         this.setVisible(true);
 
         this.controlPanel = controlPanel;

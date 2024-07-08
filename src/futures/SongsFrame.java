@@ -98,6 +98,7 @@ public class SongsFrame extends JFrame implements ActionListener {
         this.setSize(500, 500);
         this.setLayout(new BorderLayout());
         this.add(addButton, BorderLayout.SOUTH);
+        this.setResizable(false);
         this.setVisible(true);
 
         this.controlPanel = controlPanel;
