@@ -1,4 +1,4 @@
-package futures;
+package features;
 
 import player.ControlPanel;
 import player.DiscPanel;
@@ -19,18 +19,18 @@ import java.util.ArrayList;
 
 
 public class SongButton extends JButton implements ActionListener{
-    int ordinalNum;
-    ArrayList<SongButton> songs;
-    DiscPanel discPanel;
-    ControlPanel controlPanel;
-    TitlePanel titlePanel;
-    File song;
-    String playlistFilePath;
-    FileWriter fileWriter;
-    SongsFrame songsFrame;
-    String filePath;
+    private int ordinalNum;
+    private ArrayList<SongButton> songs;
+    private DiscPanel discPanel;
+    private TitlePanel titlePanel;
+    private ControlPanel controlPanel;
+    private File song;
+    private String playlistFilePath;
+    private FileWriter fileWriter;
+    private SongsFrame songsFrame;
+    private String filePath;
 
-    class ClickListener extends MouseAdapter{
+    private class ClickListener extends MouseAdapter{
         @Override
         public void mouseClicked(MouseEvent e){
             if(SwingUtilities.isRightMouseButton(e)){
@@ -40,12 +40,24 @@ public class SongButton extends JButton implements ActionListener{
                     PlaySong playSong;
 
                     try {
-                        playSong = new PlaySong(song.getAbsolutePath(), discPanel, controlPanel);
+                        playSong = new PlaySong();
+                        playSong.setFilePath(song.getAbsolutePath());
+                        playSong.setDiscPanel(discPanel);
+                        playSong.setControlPanel(controlPanel);
+                        playSong.stopPreviousSong();
+                        playSong.setTotalTime();
+                        playSong.playMusic();
 
                         controlPanel.setPlaysong(playSong);
-                        controlPanel.durationBar.isPlaylist = 1;
-                        controlPanel.durationBar.setSongs(songs);
-                        controlPanel.durationBar.setOrdinalNum(ordinalNum);
+                        controlPanel.getDurationBar().setIsPlaylist(1);
+                        controlPanel.getDurationBar().setSongs(songs);
+                        controlPanel.getDurationBar().setOrdinalNum(ordinalNum);
+
+                        for (int i = 0; i < songs.size(); i++){
+                            if(i != ordinalNum){
+                                songs.get(i).setBackground(null);
+                            }
+                        }
 
                         titlePanel.changeTitle(song.getName());
 
@@ -84,12 +96,35 @@ public class SongButton extends JButton implements ActionListener{
 
                     songsFrame.dispose();
 
-                    songsFrame = new SongsFrame(discPanel, titlePanel, controlPanel);
+                    songsFrame = new SongsFrame();
+                    songsFrame.setDiscPanel(discPanel);
+                    songsFrame.setTitlePanel(titlePanel);
+                    songsFrame.setControlPanel(controlPanel);
                     songsFrame.getListSongs(playlistFilePath);
                 }
             }
 
         }
+    }
+
+    public void setDiscPanel(DiscPanel discPanel) {
+        this.discPanel = discPanel;
+    }
+
+    public void setTitlePanel(TitlePanel titlePanel) {
+        this.titlePanel = titlePanel;
+    }
+
+    public void setControlPanel(ControlPanel controlPanel) {
+        this.controlPanel = controlPanel;
+    }
+
+    public void setOrdinalNum(int ordinalNum) {
+        this.ordinalNum = ordinalNum;
+    }
+
+    public void setSongs(ArrayList<SongButton> songs) {
+        this.songs = songs;
     }
 
     void setPlaylistFilePath(String playlistFilePath){
@@ -132,7 +167,7 @@ public class SongButton extends JButton implements ActionListener{
         return this.filePath;
     }
 
-    SongButton(String data, int ordinalNum, ArrayList<SongButton> songs, DiscPanel discPanel, TitlePanel titlePanel, ControlPanel controlPanel){
+    SongButton(String data){
         song = new File(data);
         ClickListener clickListener = new ClickListener();
 
@@ -143,28 +178,35 @@ public class SongButton extends JButton implements ActionListener{
         this.setBackground(null);
         this.setFocusable(false);
         this.setForeground(Color.white);
-//        this.addMouseListener(clickListener);
+        this.addMouseListener(clickListener);
         this.addActionListener(this);
 
-        this.songs = songs;
-        this.ordinalNum = ordinalNum;
-        this.controlPanel = controlPanel;
-        this.discPanel = discPanel;
-        this.titlePanel = titlePanel;
     }
     @Override
     public void actionPerformed(ActionEvent e) {
         PlaySong playSong;
 
         try {
-            playSong = new PlaySong(song.getAbsolutePath(), discPanel, controlPanel);
+            playSong = new PlaySong();
+            playSong.setFilePath(song.getAbsolutePath());
+            playSong.setDiscPanel(discPanel);
+            playSong.setControlPanel(controlPanel);
+            playSong.stopPreviousSong();
+            playSong.setTotalTime();
+            playSong.playTheSong();
 
             controlPanel.setPlaysong(playSong);
-            controlPanel.durationBar.isPlaylist = 1;
-            controlPanel.durationBar.setSongs(songs);
-            controlPanel.durationBar.setOrdinalNum(ordinalNum);
+            controlPanel.getDurationBar().setIsPlaylist(1);
+            controlPanel.getDurationBar().setSongs(songs);
+            controlPanel.getDurationBar().setOrdinalNum(ordinalNum);
 
             titlePanel.changeTitle(song.getName());
+
+            for (int i = 0; i < songs.size(); i++){
+                if(i != ordinalNum){
+                    songs.get(i).setBackground(null);
+                }
+            }
 
             setBackground(Color.lightGray);
         } catch (Exception ex) {

@@ -4,8 +4,8 @@ import javax.swing.*;
 import java.awt.*;
 
 public class TitlePanel extends JPanel {
-    String title = "";
-    JLabel label = new JLabel();
+    private String title = "";
+    private JLabel label = new JLabel();
 
     public void changeTitle(String title){
         label.setText("");

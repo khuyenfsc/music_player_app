@@ -6,17 +6,24 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class PauseButton extends JButton implements ActionListener {
-    ImageIcon pauseIcon = new ImageIcon(".\\src\\images\\play.png");
-    int checkPause = 0;
-    ControlPanel controlPanel;
+    private ImageIcon pauseIcon = new ImageIcon(".\\src\\images\\play.png");
+    private int checkPause = 0;
+    private ControlPanel controlPanel;
 
-    PauseButton(ControlPanel controlPanel){
+    public void setCheckPause(int checkPause) {
+        this.checkPause = checkPause;
+    }
+
+    public void setControlPanel(ControlPanel controlPanel){
+        this.controlPanel = controlPanel;
+    }
+
+    PauseButton(){
         this.setBackground(null);
         this.setPreferredSize(new Dimension(64, 64));
         this.setIcon(pauseIcon);
         this.setBorder(null);
         this.addActionListener(this);
-        this.controlPanel = controlPanel;
 //        this.controlPanel.mainPlayer.futures.addSong.getPlaySong().setPauseButton(this);
     }
 
@@ -26,18 +33,18 @@ public class PauseButton extends JButton implements ActionListener {
             this.setIcon(new ImageIcon(".\\src\\images\\pause.png"));
             checkPause = 0;
 
-            this.controlPanel.playSong.playMusic();
+            this.controlPanel.getPlaySong().playMusic();
 
-            this.controlPanel.mainPlayer.discPanel.setTimerStart();
-            this.controlPanel.durationBar.startCount();
+            this.controlPanel.getMainPlayer().getDiscPanel().setTimerStart();
+            this.controlPanel.getDurationBar().startCount();
         }else{
             this.setIcon(new ImageIcon(".\\src\\images\\play.png"));
             checkPause = 1;
 
-            this.controlPanel.playSong.pauseMusic();
+            this.controlPanel.getPlaySong().pauseMusic();
 
-            this.controlPanel.mainPlayer.discPanel.setTimerStop();
-            this.controlPanel.durationBar.stopCount();
+            this.controlPanel.getMainPlayer().getDiscPanel().setTimerStop();
+            this.controlPanel.getDurationBar().stopCount();
         }
     }
 }

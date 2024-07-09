@@ -1,5 +1,6 @@
 package player;
 
+import features.AddSong;
 import main.Main;
 
 import javax.swing.*;
@@ -8,12 +9,29 @@ import javax.swing.event.ChangeListener;
 import java.awt.*;
 
 public class VolumeBar extends JSlider implements ChangeListener {
-    JPanel panel = new JPanel();
-    JLabel label = new JLabel();
-    int checkVisible = 0;
-    MainPlayer mainPlayer;
+    private JPanel panel = new JPanel();
+    private JLabel label = new JLabel();
+    private int checkVisible = 0;
+    private MainPlayer mainPlayer;
+    private AddSong addSong;
 
-    VolumeBar(MainPlayer mainPlayer){
+    public void setMainPlayer(MainPlayer mainPlayer){
+        this.mainPlayer = mainPlayer;
+    }
+
+    public JPanel getPanel(){
+        return panel;
+    }
+
+    public int getCheckVisible(){
+        return checkVisible;
+    }
+
+    public void setCheckVisible(int checkVisible){
+        this.checkVisible = checkVisible;
+    }
+
+    VolumeBar(){
         this.setPreferredSize(new Dimension(20, 100));
         this.setOrientation(SwingConstants.VERTICAL);
         this.setMaximum(100);
@@ -21,9 +39,9 @@ public class VolumeBar extends JSlider implements ChangeListener {
         this.setVisible(true);
         this.addChangeListener(this);
 
-        if(mainPlayer.futures != null){
-            label.setText(mainPlayer.futures.addSong.getPlaySong().getVolume() + "");
-            this.setValue(mainPlayer.futures.addSong.getPlaySong().getVolume());
+        if(mainPlayer != null){
+            label.setText(addSong.getPlaySong().getVolume() + "");
+            this.setValue(addSong.getPlaySong().getVolume());
         }else{
             label.setText(0+"");
             this.setValue(0);
@@ -39,13 +57,12 @@ public class VolumeBar extends JSlider implements ChangeListener {
         panel.add(this);
         panel.setVisible(false);
 
-        this.mainPlayer = mainPlayer;
     }
 
     @Override
     public void stateChanged(ChangeEvent e) {
         if (this.mainPlayer!= null){
-            this.mainPlayer.controlPanel.playSong.setVolume((0.01*this.getValue()));
+            this.mainPlayer.getControlPanel().getPlaySong().setVolume((0.01*this.getValue()));
         }
         this.label.setText(this.getValue()+"");
     }

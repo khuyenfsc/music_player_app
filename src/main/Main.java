@@ -1,6 +1,6 @@
 package main;
 
-import futures.*;
+import features.*;
 import player.*;
 
 import javax.swing.*;
@@ -12,12 +12,18 @@ public class Main{
 
         MainPlayer mainPlayer = new MainPlayer();
 
-        Futures futures = new Futures(mainPlayer.getDiscPanel(), mainPlayer.getTitlePanel(), mainPlayer.getControlPanel());
+        Feature feature = new Feature();
+        feature.setTitlePanel(mainPlayer.getTitlePanel());
+        feature.setControlPanel(mainPlayer.getControlPanel());
+        feature.setDiscPanel(mainPlayer.getDiscPanel());
+        feature.setAddSong();
+        feature.setPlaylistButton();
+        feature.addComponentToFeature();
 
         appWindow.setVisible(true);
 
-        mainPlayer.setFutures(futures);
-        appWindow.add(futures);
+        mainPlayer.setFeature(feature);
+        appWindow.add(feature);
 
         appWindow.add(mainPlayer);
 

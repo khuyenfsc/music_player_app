@@ -6,26 +6,28 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class VolumeButton extends JButton implements ActionListener {
-    ControlPanel controlPanel;
+    private ControlPanel controlPanel;
 
-    VolumeButton(ControlPanel controlPanel){
+    public void setControlPanel(ControlPanel controlPanel){
+        this.controlPanel = controlPanel;
+    }
+
+    VolumeButton(){
         this.setBackground(null);
         this.setIcon(new ImageIcon(".\\src\\images\\volume.png"));
         this.setBorder(null);
         this.addActionListener(this);
         this.setPreferredSize(new Dimension(32, 32));
-
-        this.controlPanel = controlPanel;
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if(controlPanel.mainPlayer.volumeBar.checkVisible == 0){
-            this.controlPanel.mainPlayer.volumeBar.panel.setVisible(true);
-            this.controlPanel.mainPlayer.volumeBar.checkVisible = 1;
+        if(controlPanel.getMainPlayer().getVolumeBar().getCheckVisible() == 0){
+            this.controlPanel.getMainPlayer().getVolumeBar().getPanel().setVisible(true);
+            this.controlPanel.getMainPlayer().getVolumeBar().setCheckVisible(1);
         }else{
-            this.controlPanel.mainPlayer.volumeBar.panel.setVisible(false);
-            this.controlPanel.mainPlayer.volumeBar.checkVisible = 0;
+            this.controlPanel.getMainPlayer().getVolumeBar().getPanel().setVisible(false);
+            this.controlPanel.getMainPlayer().getVolumeBar().setCheckVisible(0);
         }
     }
 }

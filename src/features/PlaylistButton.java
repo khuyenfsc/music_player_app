@@ -1,22 +1,38 @@
-package futures;
+package features;
 
 import player.ControlPanel;
 import player.DiscPanel;
+import player.PlaySong;
 import player.TitlePanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class PlaylistButton extends JButton implements ActionListener {
-    FileWriter fileWriter;
-    DiscPanel discPanel;
-    ControlPanel controlPanel;
-    TitlePanel titlePanel;
+    private FileWriter fileWriter;
+    private DiscPanel discPanel;
+    private ControlPanel controlPanel;
+    private TitlePanel titlePanel;
+
+
+    public void setTitlePanel(TitlePanel titlePanel) {
+        this.titlePanel = titlePanel;
+    }
+
+    public void setControlPanel(ControlPanel controlPanel) {
+        this.controlPanel = controlPanel;
+    }
+
+    public void setDiscPanel(DiscPanel discPanel) {
+        this.discPanel = discPanel;
+    }
 
     void createPlaylistFile(String fileName) throws IOException {
         fileWriter = new FileWriter(".\\src\\playlists\\" + fileName);
@@ -24,12 +40,15 @@ public class PlaylistButton extends JButton implements ActionListener {
     }
 
     void listFiles(File[] listOfFiles){
-        PlaylistFrame playlistFrame = new PlaylistFrame(discPanel, titlePanel, controlPanel);
+        PlaylistFrame playlistFrame = new PlaylistFrame();
+        playlistFrame.setControlPanel(controlPanel);
+        playlistFrame.setDiscPanel(discPanel);
+        playlistFrame.setTitlePanel(titlePanel);
         playlistFrame.setListOfFiles(listOfFiles);
     }
 
 
-    PlaylistButton(DiscPanel discPanel, TitlePanel titlePanel, ControlPanel controlPanel){
+    PlaylistButton(){
         this.setFocusable(false);
         this.setBorder(null);
         this.setIcon(new ImageIcon(".\\src\\images\\playlist.png"));
@@ -40,9 +59,6 @@ public class PlaylistButton extends JButton implements ActionListener {
         this.setForeground(Color.white);
         this.addActionListener(this);
 
-        this.controlPanel = controlPanel;
-        this.discPanel = discPanel;
-        this.titlePanel = titlePanel;
     }
 
     @Override

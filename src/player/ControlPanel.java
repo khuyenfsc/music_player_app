@@ -4,21 +4,29 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ControlPanel extends JPanel {
-    int checkStreamPlay;//0 - from addButton,, 1 - from playlist//
-    PlaySong playSong;
-    DiscPanel discPanel;
-    public DurationBar durationBar = new DurationBar(this);
-    PauseButton pauseButton = new PauseButton(this);
-    RewindButton rewindButton = new RewindButton(this);
-    FastForwardButton fastForwardButton = new FastForwardButton(this);
-    VolumeButton volumeButton = new VolumeButton(this);
-    ReplayButton replayButton = new ReplayButton(this);
-    MainPlayer mainPlayer;
-    JLabel startTime = new JLabel();
-    JLabel stopTime = new JLabel();
-    double totalDuration;
-    int extraSecond;
-    int totalMinute;
+    private int checkStreamPlay;//0 - from addButton,, 1 - from playlist//
+    private PlaySong playSong;
+    private DiscPanel discPanel;
+    private DurationBar durationBar = new DurationBar();
+    private PauseButton pauseButton = new PauseButton();
+    private RewindButton rewindButton = new RewindButton();
+    private FastForwardButton fastForwardButton = new FastForwardButton();
+    private VolumeButton volumeButton = new VolumeButton();
+    private ReplayButton replayButton = new ReplayButton();
+    private MainPlayer mainPlayer;
+    private JLabel startTime = new JLabel();
+    private JLabel stopTime = new JLabel();
+    private double totalDuration;
+    private int extraSecond;
+    private int totalMinute;
+
+    public void setDiscPanel(DiscPanel discPanel) {
+        this.discPanel = discPanel;
+    }
+
+    public void setMainPlayer(MainPlayer mainPlayer) {
+        this.mainPlayer = mainPlayer;
+    }
 
     void changeStopTime(){
         stopTime.setText(totalMinute + ":" + "0".repeat((extraSecond / 10 == 0)?1:0) + extraSecond);
@@ -29,8 +37,6 @@ public class ControlPanel extends JPanel {
         durationBar.setMaxTimer();
 
         revalidate();
-
-
     }
 
     DiscPanel getDiscPanel(){
@@ -60,14 +66,13 @@ public class ControlPanel extends JPanel {
         this.totalDuration = totalDuration;
         this.extraSecond = (int)((totalDuration - Math.floor(totalDuration))*60);
         this.totalMinute = (int)Math.floor(totalDuration);
-        System.out.println(extraSecond);
         changeStopTime();
     }
 
 
     void resetDurationBar(){
         this.durationBar.setValue(0);
-        this.durationBar.progressTime = 1;
+        this.durationBar.setProgressTime(1);
     }
 
     public void setCheckStreamPlay(int checkStreamPlay){
@@ -78,7 +83,27 @@ public class ControlPanel extends JPanel {
         this.playSong = playSong;
     }
 
-    ControlPanel(DiscPanel discPanel, MainPlayer mainPlayer){
+    public PlaySong getPlaySong(){
+        return this.playSong;
+    }
+
+    public DurationBar getDurationBar(){
+        return this.durationBar;
+    }
+
+    public MainPlayer getMainPlayer(){
+        return this.mainPlayer;
+    }
+
+
+    ControlPanel(){
+        durationBar.setControlPanel(this);
+        pauseButton.setControlPanel(this);
+        rewindButton.setControlPanel(this);
+        fastForwardButton.setControlPanel(this);
+        volumeButton.setControlPanel(this);
+        replayButton.setControlPanel(this);
+
         startTime.setText("00:00");
         startTime.setFont(new Font("Arial", Font.PLAIN, 15));
         startTime.setForeground(Color.white);
@@ -89,8 +114,6 @@ public class ControlPanel extends JPanel {
 
 
         this.setBackground(null);
-        System.out.println(durationBar.getX() + " " + durationBar.getY());
-        System.out.println(durationBar.getWidth() + " " + durationBar.getHeight());
         this.setBounds(0, 420, 450, 180);
         this.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
         this.add(startTime);
@@ -102,8 +125,6 @@ public class ControlPanel extends JPanel {
         this.add(fastForwardButton);
         this.add(replayButton);
 
-        this.discPanel = discPanel;
-        this.mainPlayer = mainPlayer;
     }
 
 

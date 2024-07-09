@@ -18,9 +18,30 @@ public class PlaySong implements ActionListener{
     private Duration timePause;
     private boolean musicPaused = false;
     private JButton playButton = new JButton("Play");
-    ControlPanel controlPanel;
+    private DiscPanel discPanel;
+    private TitlePanel titlePanel;
+    private ControlPanel controlPanel;
+    private String filePath;
 
+    public static void setMediaPlayer(MediaPlayer mediaPlayer) {
+        PlaySong.mediaPlayer = mediaPlayer;
+    }
 
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
+    public void setDiscPanel(DiscPanel discPanel) {
+        this.discPanel = discPanel;
+    }
+
+    public void setTitlePanel(TitlePanel titlePanel) {
+        this.titlePanel = titlePanel;
+    }
+
+    public void setControlPanel(ControlPanel controlPanel) {
+        this.controlPanel = controlPanel;
+    }
 
     public void resumeMusic(){
         if(musicPaused){
@@ -62,7 +83,7 @@ public class PlaySong implements ActionListener{
     }
 
     void setIconForPauseButton(){
-        controlPanel.pauseButton.setIcon(new ImageIcon(".\\src\\images\\pause.png"));;
+        controlPanel.getPauseButton().setIcon(new ImageIcon(".\\src\\images\\pause.png"));;
     }
 
     void setVolume(double volume){
@@ -73,13 +94,13 @@ public class PlaySong implements ActionListener{
         return (int)mediaPlayer.getVolume();
     }
 
-    public PlaySong(String filePath, DiscPanel discPanel, ControlPanel controlPanel) throws Exception{
-        JFXPanel jfxPanel = new JFXPanel();
-        // Stop the song is playing
+    public void stopPreviousSong(){
         if(mediaPlayer != null){
             mediaPlayer.stop();
         }
+    }
 
+    public void setTotalTime() throws InterruptedException {
         mediaPlayer = new MediaPlayer(new Media(new File(filePath).toURI().toString()));
 
         while(mediaPlayer.getStatus() != MediaPlayer.Status.READY){
@@ -87,10 +108,10 @@ public class PlaySong implements ActionListener{
         }
 
         controlPanel.setTotalDuration(mediaPlayer.getTotalDuration().toMinutes());
-        System.out.println(Duration.millis(1000*mediaPlayer.getTotalDuration().toSeconds()));
+    }
 
+    public void playTheSong(){
         mediaPlayer.play();
-        this.controlPanel = controlPanel;
 
         setIconForPauseButton();
 
@@ -98,11 +119,15 @@ public class PlaySong implements ActionListener{
         controlPanel.resetDurationBar();
     }
 
+    public PlaySong() throws InterruptedException {
+        JFXPanel jfxPanel = new JFXPanel();
+        // Stop the song is playing
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource()==playButton){
             if(musicPaused){
-                System.out.println("continue");
                 resumeMusic();
             }else{
                 pauseMusic();

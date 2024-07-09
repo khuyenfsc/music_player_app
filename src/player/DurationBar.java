@@ -1,6 +1,6 @@
 package player;
 
-import futures.SongButton;
+import features.SongButton;
 import javafx.util.Duration;
 
 import javax.swing.*;
@@ -12,14 +12,42 @@ import java.util.ArrayList;
 
 
 public class DurationBar extends JSlider implements ActionListener, ChangeListener {
-    Timer timer = new Timer(1000, this);
-    int progressTime = 1;
-    int previousTime = 1;
-    int checkReplay = 0;
-    public int ordinalNum;
-    public int isPlaylist;
-    ArrayList<SongButton> songs;
-    ControlPanel controlPanel;
+    private Timer timer = new Timer(1000, this);
+    private int progressTime = 1;
+    private int previousTime = 1;
+    private int checkReplay = 0;
+    private int ordinalNum;
+    private int isPlaylist;
+    private ArrayList<SongButton> songs;
+    private ControlPanel controlPanel;
+
+    public int getProgressTime(){
+        return this.progressTime;
+    }
+
+    public void setProgressTime(int progressTime) {
+        this.progressTime = progressTime;
+    }
+
+    public int getCheckReplay() {
+        return checkReplay;
+    }
+
+    public void setCheckReplay(int checkReplay) {
+        this.checkReplay = checkReplay;
+    }
+
+    public int getIsPlaylist(){
+        return this.isPlaylist;
+    }
+
+    public void setIsPlaylist(int isPlaylist) {
+        this.isPlaylist = isPlaylist;
+    }
+
+    public void setControlPanel(ControlPanel controlPanel) {
+        this.controlPanel = controlPanel;
+    }
 
     void startCount(){
         timer.start();
@@ -61,7 +89,7 @@ public class DurationBar extends JSlider implements ActionListener, ChangeListen
     void replayMedia(){
         if(checkReplay == 1){
             progressTime = 0;
-            this.controlPanel.playSong.seekToSpecificTime(Duration.millis(progressTime));
+            this.controlPanel.getPlaySong().seekToSpecificTime(Duration.millis(progressTime));
             this.setValue(progressTime);
         }
     }
@@ -77,7 +105,6 @@ public class DurationBar extends JSlider implements ActionListener, ChangeListen
     void nextMedia(){
         if(isPlaylist == 1){
             ordinalNum++;
-            System.out.println(songs.get(ordinalNum).getFilePath() + " " + ordinalNum);
 
             progressTime = 0;
             this.setValue(progressTime);
@@ -88,15 +115,13 @@ public class DurationBar extends JSlider implements ActionListener, ChangeListen
     }
 
 
-    DurationBar(ControlPanel controlPanel){
+    DurationBar(){
 
         this.setValue(0);
         this.addChangeListener(this);
         this.setOrientation(SwingConstants.HORIZONTAL);
         this.setPreferredSize(new Dimension(300, 20));
         this.setBackground(null);
-
-        this.controlPanel = controlPanel;
 
     }
 
@@ -127,11 +152,11 @@ public class DurationBar extends JSlider implements ActionListener, ChangeListen
             controlPanel.getDiscPanel().setTimerStart();
         }
 
-        if(this.controlPanel.playSong != null && Math.abs(progressTime - previousTime) > 1){
-            this.controlPanel.playSong.seekToSpecificTime(Duration.millis((this.progressTime * 1000)));
+        if(this.controlPanel.getPlaySong() != null && Math.abs(progressTime - previousTime) > 1){
+            this.controlPanel.getPlaySong().seekToSpecificTime(Duration.millis((this.progressTime * 1000)));
             previousTime = progressTime;
-            controlPanel.pauseButton.setIcon(new ImageIcon(".\\src\\images\\pause.png"));
-            controlPanel.pauseButton.checkPause = 0;
+            controlPanel.getPauseButton().setIcon(new ImageIcon(".\\src\\images\\pause.png"));
+            controlPanel.getPauseButton().setCheckPause(0);
         }
 
     }

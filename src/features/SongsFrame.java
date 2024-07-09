@@ -1,4 +1,4 @@
-package futures;
+package features;
 
 import player.ControlPanel;
 import player.DiscPanel;
@@ -16,22 +16,26 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class SongsFrame extends JFrame implements ActionListener {
-    JPanel container = new JPanel();
-    Scanner scanner;
-    ArrayList<SongButton> songs = new ArrayList<>();
-    DiscPanel discPanel;
-    ControlPanel controlPanel;
-    TitlePanel titlePanel;
-    JButton addButton = new JButton("ADD");
-    FileWriter fileWriter;
-    String filePath;
+    private JPanel container = new JPanel();
+    private Scanner scanner;
+    private ArrayList<SongButton> songs = new ArrayList<>();
+    private DiscPanel discPanel;
+    private TitlePanel titlePanel;
+    private ControlPanel controlPanel;
+    private JButton addButton = new JButton("ADD");
+    private FileWriter fileWriter;
+    private String playlistFilePath;
 
-    void getListSongs(String filePath){
+    void setPlaylistFilePath(String playlistFilePath){
+        this.playlistFilePath = playlistFilePath;
+    }
+
+    void getListSongs(String playlistFilePath){
         int ordinalNum = 0;
-        this.filePath = filePath;
+        setPlaylistFilePath(playlistFilePath);
 
         try {
-            openFileToRead(filePath);
+            openFileToRead(playlistFilePath);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -46,7 +50,7 @@ public class SongsFrame extends JFrame implements ActionListener {
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
         this.add(scrollPane);
 
-        closeFileAfterRead(filePath);
+        closeFileAfterRead(playlistFilePath);
     }
 
     void openFileToRead(String filePath) throws IOException {
@@ -58,13 +62,40 @@ public class SongsFrame extends JFrame implements ActionListener {
     }
 
     void setSongButton(String data, int ordinalNum){
-        SongButton songButton = new SongButton(data, ordinalNum, songs, discPanel, titlePanel, controlPanel);
+        SongButton songButton = new SongButton(data);
+        songButton.setSongs(songs);
+        songButton.setTitlePanel(titlePanel);
+        songButton.setDiscPanel(discPanel);
+        songButton.setControlPanel(controlPanel);
+        songButton.setOrdinalNum(ordinalNum);
         songButton.setFilePath(data);
-        songButton.setPlaylistFilePath(filePath);
+        songButton.setPlaylistFilePath(playlistFilePath);
         songButton.setSongsFrame(this);
 
         songs.add(songButton);
         container.add(songButton);
+    }
+
+    void setAddButton(){
+        addButton.setPreferredSize(new Dimension(500, 50));
+        addButton.setIcon(new ImageIcon(".\\src\\images\\add.png"));
+        addButton.setFont(new Font("Arial", Font.PLAIN, 20));
+        addButton.setBackground(Color.black);
+        addButton.setForeground(Color.white);
+        addButton.setFocusable(false);
+        addButton.addActionListener(this);
+    }
+
+    public void setDiscPanel(DiscPanel discPanel) {
+        this.discPanel = discPanel;
+    }
+
+    public void setTitlePanel(TitlePanel titlePanel) {
+        this.titlePanel = titlePanel;
+    }
+
+    public void setControlPanel(ControlPanel controlPanel) {
+        this.controlPanel = controlPanel;
     }
 
     void openFileToWrite(String filePath) throws IOException {
@@ -76,34 +107,24 @@ public class SongsFrame extends JFrame implements ActionListener {
     }
 
     void writeToFile(String data) throws IOException {
-        openFileToWrite(filePath);
+        openFileToWrite(playlistFilePath);
 
         fileWriter.write(data);
 
-        closeFileAfterWrite(filePath);
+        closeFileAfterWrite(playlistFilePath);
     }
 
-    SongsFrame(DiscPanel discPanel, TitlePanel titlePanel, ControlPanel controlPanel){
+    SongsFrame(){
         container.setBackground(new Color(62,62,66));
         container.setLayout(new BoxLayout(container, BoxLayout.Y_AXIS));
 
-        addButton.setPreferredSize(new Dimension(500, 50));
-        addButton.setIcon(new ImageIcon(".\\src\\images\\add.png"));
-        addButton.setFont(new Font("Arial", Font.PLAIN, 20));
-        addButton.setBackground(Color.black);
-        addButton.setForeground(Color.white);
-        addButton.setFocusable(false);
-        addButton.addActionListener(this);
+        setAddButton();
 
         this.setSize(500, 500);
         this.setLayout(new BorderLayout());
         this.add(addButton, BorderLayout.SOUTH);
         this.setResizable(false);
         this.setVisible(true);
-
-        this.controlPanel = controlPanel;
-        this.discPanel = discPanel;
-        this.titlePanel = titlePanel;
     }
 
     @Override
@@ -121,7 +142,10 @@ public class SongsFrame extends JFrame implements ActionListener {
         }
 
         this.dispose();
-        SongsFrame songsFrame = new SongsFrame(discPanel, titlePanel, controlPanel);
-        songsFrame.getListSongs(filePath);
+        SongsFrame songsFrame = new SongsFrame();
+        songsFrame.setControlPanel(controlPanel);
+        songsFrame.setDiscPanel(discPanel);
+        songsFrame.setTitlePanel(titlePanel);
+        songsFrame.getListSongs(playlistFilePath);
     }
 }

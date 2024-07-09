@@ -10,11 +10,11 @@ import java.io.File;
 import java.io.IOException;
 
 public class DiscPanel extends JPanel implements ActionListener {
-    BufferedImage discIcon = ImageIO.read(new File(".\\src\\images\\disc.png"));
-    BufferedImage discImage;
-    int angle = 1;
-    DiscRotate discRotate = new DiscRotate();
-    Timer timer = new Timer(100, this);
+    private BufferedImage discIcon = ImageIO.read(new File(".\\src\\images\\disc.png"));
+    private BufferedImage discImage;
+    private int angle = 1;
+    private DiscRotate discRotate = new DiscRotate();
+    private Timer timer = new Timer(100, this);
 
     void setTimerStart(){
         timer.start();
@@ -28,7 +28,6 @@ public class DiscPanel extends JPanel implements ActionListener {
         this.setBackground(null);
         this.setBounds(0, 0, 450, 360);
         discImage = discRotate.rotate(discIcon, angle);
-
     }
 
 
