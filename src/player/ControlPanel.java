@@ -28,8 +28,16 @@ public class ControlPanel extends JPanel {
         this.mainPlayer = mainPlayer;
     }
 
+    public String repeat(String str, int times) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < times; i++) {
+            sb.append(str);
+        }
+        return sb.toString();
+    }
+
     void changeStopTime(){
-        stopTime.setText(totalMinute + ":" + "0".repeat((extraSecond / 10 == 0)?1:0) + extraSecond);
+        stopTime.setText(totalMinute + ":" + repeat("0", (extraSecond / 10 == 0)?1:0) + extraSecond);
         stopTime.setFont(new Font("Arial", Font.PLAIN, 15));
         stopTime.setForeground(Color.white);
 
@@ -55,7 +63,7 @@ public class ControlPanel extends JPanel {
     }
 
     void changeCurrentTime(int currentSecond, int currentMinute){
-        startTime.setText(currentMinute + ":" + "0".repeat((currentSecond/10 == 0)?1:0) + currentSecond);
+        startTime.setText(currentMinute + ":" + repeat("0", (currentSecond/10 == 0)?1:0) + currentSecond);
         startTime.setFont(new Font("Arial", Font.PLAIN, 15));
         startTime.setForeground(Color.white);
 

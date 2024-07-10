@@ -1,7 +1,6 @@
 package player;
 
 import features.AddSong;
-import main.Main;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;

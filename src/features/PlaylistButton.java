@@ -2,15 +2,12 @@ package features;
 
 import player.ControlPanel;
 import player.DiscPanel;
-import player.PlaySong;
 import player.TitlePanel;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
