@@ -18,3 +18,6 @@ How to run:
 
 <strong>Notice</strong>: CLick right mouse to delete songs and playlist
 
+![image](https://github.com/khuyenfsc/music_player_app/assets/117952543/29626aa4-8886-432a-b8cf-7aed30b60a1a)
+
+
